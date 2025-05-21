@@ -2,66 +2,84 @@
 <html>
 <head>
     <title>Disease Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         h1 {
             color: #4CAF50;
             text-align: center;
+            margin-bottom: 30px;
         }
         .upload-form {
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            padding: 20px;
-            margin-top: 20px;
+            text-align: center;
+            margin-bottom: 30px;
         }
         .upload-btn {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
+            transition: background-color 0.3s;
         }
         .upload-btn:hover {
             background-color: #45a049;
         }
         .preview {
-            margin-top: 20px;
             text-align: center;
+            margin-bottom: 30px;
         }
         #imagePreview {
             max-width: 100%;
-            max-height: 300px;
-            margin-top: 10px;
+            max-height: 400px;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .instructions {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+        }
+        .warning {
+            color: #f44336;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h1>Disease Detection</h1>
-    
-    <div class="upload-form">
-        <h2>Upload an image for disease detection</h2>
-        <form action="/predict" method="post" enctype="multipart/form-data">
-            <input type="file" name="image" id="imageInput" accept="image/*" required onchange="previewImage(this)">
-            <br>
-            <input type="submit" value="Detect Disease" class="upload-btn">
-        </form>
+    <div class="container">
+        <h1>Disease Detection</h1>
+        
+        <div class="upload-form">
+            <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(this)" class="upload-btn">
+            <div class="instructions">
+                <p>Upload an image for disease detection</p>
+                <p class="warning">Note: This is a demo version. For full functionality, please download the desktop application.</p>
+            </div>
+        </div>
         
         <div class="preview">
-            <h3>Image Preview:</h3>
             <img id="imagePreview" style="display: none;" alt="Image Preview">
         </div>
     </div>
 
     <script>
-        function previewImage(input) {
+        function handleImageUpload(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 
@@ -75,4 +93,4 @@
         }
     </script>
 </body>
-</html> 
+</html>

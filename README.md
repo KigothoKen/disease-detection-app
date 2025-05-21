@@ -13,7 +13,6 @@ This is a web application that uses a TensorFlow Lite model to classify pig dise
 
 1. Clone this repository
 pip install -r requirements.txt
-```
 
 ## Running the Application
 
@@ -31,23 +30,19 @@ python app.py
 - Disease prediction with confidence scores
 - Clean and user-friendly interface
 
-## Deployment
+## GitHub Pages Deployment
 
-The application is deployed using Heroku. To deploy your own instance:
+The application is deployed on GitHub Pages as a static site demo. While the demo shows the interface and image upload functionality, the actual disease detection requires the full Python backend.
 
-1. Create a Heroku account if you don't have one
-2. Install the Heroku CLI
-3. Login to Heroku:
+To run the full application with disease detection:
+1. Clone this repository
+2. Install the required dependencies:
 ```bash
-heroku login
+pip install -r requirements.txt
 ```
-4. Create a new Heroku app:
+3. Run the Flask application:
 ```bash
-heroku create
-```
-5. Deploy the application:
-```bash
-git push heroku main
+python app.py
 ```
 
 ## Model Information
