@@ -1,0 +1,3 @@
+include models/detect.tflite
+include templates/*.html
+include static/*
