@@ -6,3 +6,4 @@ command = "python app.py"
 
 [environment]
 PORT = "3000"
+PYTHON_VERSION = "3.10.12"
