@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        .upload-form {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .upload-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .upload-btn:hover {
+            background-color: #45a049;
+        }
+        .preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Disease Detection</h1>
+    
+    <div class="upload-form">
+        <h2>Upload an image for disease detection</h2>
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" id="imageInput" accept="image/*" required onchange="previewImage(this)">
+            <br>
+            <input type="submit" value="Detect Disease" class="upload-btn">
+        </form>
+        
+        <div class="preview">
+            <h3>Image Preview:</h3>
+            <img id="imagePreview" style="display: none;" alt="Image Preview">
+        </div>
+    </div>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('imagePreview').src = e.target.result;
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html> 

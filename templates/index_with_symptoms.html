@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pig Disease Classifier</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #5e35b1;
+            --primary-light: #9162e4;
+            --primary-dark: #280680;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --accent-color: #7c4dff;
+            --danger-color: #e57373;
+            --success-color: #81c784;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin: 10px 0;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin: 20px 0 15px 0;
+        }
+        
+        h3 {
+            color: var(--primary-dark);
+            margin: 15px 0 10px 0;
+        }
+        
+        .app-description {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 20px auto;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .instructions {
+            background-color: #e8e4f3;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .file-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .file-upload-label:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .file-upload-label i {
+            font-size: 3rem;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+        
+        .file-upload-text {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        #imageInput {
+            display: none;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        .preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 15px;
+        }
+        
+        .symptoms-container {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .symptoms-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .symptom-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .symptom-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .symptom-item input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+        
+        .symptom-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .categories-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .category-btn {
+            padding: 8px 15px;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-light);
+            color: white;
+        }
+        
+        .symptoms-tag {
+            display: inline-block;
+            background-color: #ede7f6;
+            border-radius: 16px;
+            padding: 8px 15px;
+            margin: 4px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .symptoms-list {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .file-upload-label {
+                height: 150px;
+            }
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            max-width: 350px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="PigDisease Detect Logo" class="logo">
+        </div>
+        <h1>Pig Disease Classifier</h1>
+        <p class="app-description">Upload an image and select symptoms to accurately diagnose pig diseases</p>
+    </div>
+    
+    <div class="card">
+        <div class="instructions">
+            <i class="fas fa-info-circle"></i>
+            <strong>Instructions:</strong> Upload a clear image of the pig and select any symptoms you've observed. 
+            The combination of image analysis and symptom information will help provide a more accurate diagnosis.
+        </div>
+        
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <h2><i class="fas fa-upload"></i> Upload Image</h2>
+            
+            <div class="file-upload-container">
+                <label for="imageInput" class="file-upload-label">
+                    <i class="fas fa-camera"></i>
+                    <span class="file-upload-text">Click to select an image</span>
+                </label>
+                <input type="file" name="image" id="imageInput" accept="image/*" required onchange="previewImage(this)">
+                
+                <div class="preview">
+                    <img id="imagePreview" style="display: none;" alt="Image Preview">
+                </div>
+            </div>
+            
+            <div class="symptoms-container">
+                <h2><i class="fas fa-clipboard-list"></i> Select Observed Symptoms</h2>
+                <p>Check all symptoms you've observed in the pig (optional but recommended for better diagnosis)</p>
+                
+                <div class="categories-filter">
+                    <button type="button" class="category-btn active" onclick="filterSymptoms('all')">All Symptoms</button>
+                    <button type="button" class="category-btn" onclick="filterSymptoms('fever')">Fever Related</button>
+                    <button type="button" class="category-btn" onclick="filterSymptoms('skin')">Skin Related</button>
+                    <button type="button" class="category-btn" onclick="filterSymptoms('respiratory')">Respiratory</button>
+                    <button type="button" class="category-btn" onclick="filterSymptoms('appetite')">Appetite Related</button>
+                </div>
+                
+                <div class="symptoms-list">
+                    {% for symptom in symptoms %}
+                    <div class="symptom-item" data-categories="all">
+                        <input type="checkbox" name="symptoms" id="symptom{{ loop.index }}" value="{{ symptom }}">
+                        <label for="symptom{{ loop.index }}">{{ symptom }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-search"></i> Detect Disease
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('imagePreview').src = e.target.result;
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // Simple symptom filtering functionality
+        function filterSymptoms(category) {
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter symptoms
+            const items = document.querySelectorAll('.symptom-item');
+            if (category === 'all') {
+                items.forEach(item => {
+                    item.style.display = 'flex';
+                });
+            } else {
+                items.forEach(item => {
+                    if (item.dataset.categories && item.dataset.categories.includes(category)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+        }
+        
+        // For demonstration, we'll assume all symptoms are in the "all" category
+        // In reality, you would set data-categories correctly on each symptom item based on its content
+        document.querySelectorAll('.symptom-item').forEach(item => {
+            const symptomText = item.textContent.toLowerCase();
+            let categories = 'all';
+            
+            if (symptomText.includes('fever') || symptomText.includes('temperature')) {
+                categories += ' fever';
+            }
+            if (symptomText.includes('skin') || symptomText.includes('discoloration') || symptomText.includes('lesion')) {
+                categories += ' skin';
+            }
+            if (symptomText.includes('breath') || symptomText.includes('cough') || symptomText.includes('respiratory') || symptomText.includes('nasal')) {
+                categories += ' respiratory';
+            }
+            if (symptomText.includes('appetite') || symptomText.includes('feed') || symptomText.includes('eat')) {
+                categories += ' appetite';
+            }
+            
+            item.setAttribute('data-categories', categories);
+        });
+    </script>
+</body>
+</html> 

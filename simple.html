@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Pig Disease Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        .upload-form {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+        .instructions {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffffcc;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pig Disease Viewer</h1>
+    
+    <div class="upload-form">
+        <h2>View an image for disease detection</h2>
+        <input type="file" id="imageInput" accept="image/*" onchange="previewImage(this)">
+        
+        <div class="preview">
+            <h3>Image Preview:</h3>
+            <img id="imagePreview" style="display: none;" alt="Image Preview">
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h3>How to use this application:</h3>
+        <p>1. Select an image using the file input above.</p>
+        <p>2. The image will be displayed in the preview area.</p>
+        <p>3. To analyze the image for pig diseases, you would need to:</p>
+        <ul>
+            <li>Install the required packages: Flask, TensorFlow, Pillow, NumPy</li>
+            <li>Copy the detect.tflite model to the models directory</li>
+            <li>Run the Flask application with: python app.py</li>
+        </ul>
+        <p>For now, this simple viewer allows you to preview images while you work on setting up the dependencies.</p>
+    </div>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('imagePreview').src = e.target.result;
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html> 
