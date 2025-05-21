@@ -1,8 +1,10 @@
 import numpy as np
 import os
 from PIL import Image
-import tensorflow as tf
 import tflite_runtime.interpreter as tflite
+
+# Ensure compatibility with TensorFlow 2.14.0
+tflite.__version__
 
 # Define possible diseases (replace with actual class names from your model)
 DISEASE_CLASSES = [
@@ -32,6 +34,12 @@ class PigDiseaseClassifier:
             self.input_shape = self.input_details[0]['shape']
             self.img_height = self.input_shape[1]
             self.img_width = self.input_shape[2]
+            
+            # Ensure the model is compatible with the input shape
+            if self.input_shape[0] != 1:
+                raise ValueError("Model expects batch size of 1")
+            if len(self.input_shape) != 4:
+                raise ValueError("Model expects 4D input tensor")
             
             print(f"Model loaded successfully. Input shape: {self.input_shape}")
         except Exception as e:
